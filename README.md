@@ -5,6 +5,12 @@ To download this repo use
 go get github.com/HeinOldewage/Mikrotik-API
 ~~~~
 
+Import as
+
+~~~~
+import Mikrotik "github.com/HeinOldewage/Mikrotik-API"
+~~~~
+
 
 An example usage
 
