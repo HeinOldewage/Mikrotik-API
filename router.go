@@ -7,6 +7,7 @@ import (
 	"log"
 	"net"
 	"strings"
+	"time"
 )
 
 type Router struct {
@@ -32,7 +33,9 @@ func New() *Router {
 
 func (r *Router) Connect(addr string) error {
 	var err error
-	r.connection, err = net.Dial("tcp", addr)
+	var d net.Dialer
+	d.Timeout = time.Second * 10
+	r.connection, err = d.Dial("tcp", addr)
 	if err == nil {
 
 		go func() {
@@ -152,6 +155,7 @@ func (r *Router) SendSentence(mess Sentence) (response chan Sentence, tag string
 	response = make(chan Sentence)
 	mess.Add(APIAttribute("tag", tag))
 	r.response[tag] = response
+	r.connection.SetWriteDeadline(time.Now().Add(time.Second * 10))
 	_, err = r.connection.Write(mess.Encode())
 
 	return response, tag, err
