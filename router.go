@@ -160,3 +160,7 @@ func (r *Router) SendSentence(mess Sentence) (response chan Sentence, tag string
 
 	return response, tag, err
 }
+
+func (r *Router) Close() error {
+	return r.connection.Close()
+}
